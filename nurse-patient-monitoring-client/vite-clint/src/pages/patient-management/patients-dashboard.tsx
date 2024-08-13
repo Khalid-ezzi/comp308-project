@@ -71,7 +71,7 @@ const PatientsDashboard = () => {
                   <Button
                     variant="secondary"
                     className="mt-2"
-                    onClick={() => navigate(`/patients/id/${patient.userId}`)}
+                    onClick={() => navigate(`/patients/id/${patient.id}/${patient.userId}`)}
                   >
                     View Details
                   </Button>

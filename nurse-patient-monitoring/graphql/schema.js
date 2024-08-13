@@ -82,7 +82,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    getUser(id: ID!): User
+    getUser(userId: String!): User
     getUsersByRole(role: String!): [User!]!
     getVitalSigns(userId: String!): [VitalSign]
     getDailyLog(userId: String!): [DailyLog]
@@ -111,6 +111,7 @@ type Mutation {
   submitSymptoms(userId: String!, symptoms: [String!]!): SymptomLog!
   addPatient(firstName: String!, lastName: String!, email: String!, nurseId: String!): Patient!
   assignPatientToNurse(patientId: String!, nurseId: String!): Patient!
+  updateUserProfile(userId: String!, firstName: String!, lastName: String!, email: String!, username: String!): User!
 }
 `;
 

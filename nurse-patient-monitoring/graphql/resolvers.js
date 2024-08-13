@@ -15,7 +15,7 @@ const Patient = require('../models/Patient');
 
 const resolvers = {
   Query: {
-    getUser: (_, { id }) => userController.getUser(id),
+    getUser: (_, { userId }) => userController.getUser(userId),
     getDailyLog: (_, { userId }) => dailyLogController.getDailyLog(userId),
     getTips: async (_, { userId }) => {
       return await tipController.getTips(userId);
@@ -53,6 +53,22 @@ const resolvers = {
         lastName: user.lastName,
         role: user.role
       };
+    },
+    updateUserProfile: async (_, { userId, firstName, lastName, email, username }) => {
+      try {
+        const updatedUser = await User.findOneAndUpdate(
+          { userId },
+          { firstName, lastName, email, username },
+          { new: true }
+        );
+        if (!updatedUser) {
+          throw new Error('User not found');
+        }
+        return updatedUser;
+      } catch (err) {
+        console.error('Error updating user profile:', err);
+        throw new Error('Failed to update user profile');
+      }
     },
     assignPatientToNurse: async (_, { patientId, nurseId }) => {
       try {

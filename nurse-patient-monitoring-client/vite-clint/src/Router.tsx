@@ -15,6 +15,7 @@ import PatientDashboard from "./pages/patient-view/PatientDashboard";
 import NurseAlertsPage from "./pages/patient-management/NurseAlertsPage";
 import NotAuthorized from "./pages/error/NotAuthorized";
 import PageNotFound from "./pages/error/PageNotFound";
+import ProfilePage from "./pages/account/ProfilePage";
 
 const Router = () => {
     return (
@@ -23,7 +24,7 @@ const Router = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<Register />} />
-
+                <Route path="/profile" element={<ProfilePage />} />
                 {/* Nurse-specific routes */}
                 <Route
                     path="/patients"
@@ -42,7 +43,7 @@ const Router = () => {
                     }
                 />
                 <Route
-                    path="/patients/id/:id"
+                    path="/patients/id/:patientId/:userId"
                     element={
                         <NurseProtectedRoute>
                             <PatientManagementPage />

@@ -76,7 +76,7 @@ const SEND_TIP_MUTATION = gql`
 `;
 
 const PatientManagementPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { patientId } = useParams<{ patientId: string }>(); // Extract patientId from URL
   const [patientData, setPatientData] = useState({ firstName: '', lastName: '', email: '' });
   const [vitalSignData, setVitalSignData] = useState({
     temperature: '',
@@ -90,15 +90,15 @@ const PatientManagementPage = () => {
   const [error, setError] = useState('');
 
   const { data: patientDataResponse, loading: patientLoading, refetch: refetchPatient } = useQuery(GET_PATIENT_QUERY, {
-    variables: { id },
+    variables: { id: patientId }, // Pass patientId as id to the query
   });
 
   const { data: vitalSignsDataResponse, loading: vitalSignsLoading, refetch: refetchVitalSigns } = useQuery(GET_VITAL_SIGNS_QUERY, {
-    variables: { userId: id },
+    variables: { userId: patientId }, // Use patientId as userId
   });
 
   const { data: tipsDataResponse, loading: tipsLoading, refetch: refetchTips } = useQuery(GET_TIPS_QUERY, {
-    variables: { userId: id }, // Updated variable name
+    variables: { userId: patientId }, // Use patientId as userId
   });
 
   const [updatePatient] = useMutation(UPDATE_PATIENT_MUTATION, {
@@ -145,7 +145,7 @@ const PatientManagementPage = () => {
 
     updatePatient({
       variables: {
-        id,
+        id: patientId,
         firstName: patientData.firstName,
         lastName: patientData.lastName,
         email: patientData.email,
@@ -160,7 +160,7 @@ const PatientManagementPage = () => {
 
     addVitalSign({
       variables: {
-        userId: id,
+        userId: patientId,
         temperature: parseFloat(temperature),
         heartRate: parseInt(heartRate, 10),
         bloodPressure,
@@ -176,7 +176,7 @@ const PatientManagementPage = () => {
       variables: {
         message: tipMessage,
         nurseId: localStorage.getItem('userId'),
-        patientId: id,
+        patientId: patientId,
       },
     });
   };
@@ -195,7 +195,7 @@ const PatientManagementPage = () => {
       hour12: true,
     });
     return formattedDateTime;
-}
+  }
 
   return (
     <div className="container mx-auto mt-8">
@@ -205,16 +205,13 @@ const PatientManagementPage = () => {
         </CardHeader>
         <CardContent>
           {success && <Alert>Operation successful!</Alert>}
-            {/* Send Motivational Tip */}
-            <div className="mt-8">
+
+          {/* Send Motivational Tip */}
+          <div className="mt-8">
             <Dialog>
               <DialogTrigger asChild>
-                <div
-                  className='flex justify-end'
-                >
-                  <Button>
-                    Send Motivational Tip
-                  </Button>
+                <div className="flex justify-end">
+                  <Button>Send Motivational Tip</Button>
                 </div>
               </DialogTrigger>
               <DialogContent>

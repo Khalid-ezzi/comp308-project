@@ -43,12 +43,13 @@ exports.loginUser = async ({ email, password }) => {
   }
 };
 
-exports.getUser = async (id) => {
+
+exports.getUser = async (userId) => {
   try {
-    const user = await User.findById(id);
-    if (!user) throw new Error('User not found');
-    return user;
+    return await User.findOne({ userId }); 
   } catch (err) {
-    throw new Error(err.message);
+    console.error("Error fetching user:", err.message);
+    throw new Error('Failed to fetch user');
   }
 };
+
